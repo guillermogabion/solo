@@ -73,11 +73,8 @@
       },
       methods : {
           logoutAdmin(){
-                  this.$admin.post('api/logout').then((response) => {
-                      localStorage.removeItem("token")
-                      localStorage.removeItem('user_type')
-                      this.$router.push('/login')
-                  })
+            localStorage.setItem('token', '')
+            location.reload();
           },
           checkIfActive(route){
               let route_text = route.split("/")

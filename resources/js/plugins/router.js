@@ -8,7 +8,8 @@ import UserDashboard from '../pages/User/dashboard.vue'
 // admin 
 import AdminMain from '../pages/Admin.vue'
 import AdminDashboard from '../pages/Admin/dashboard.vue'
-
+import { Self } from '../repositories/user.api'
+import store from '../store'
 
 Vue.use(VueRouter);
 
@@ -60,40 +61,34 @@ const router = new VueRouter({
     ]
 });
 
-router.beforeEach(async(to, from, next) => {
-    localStorage.setItem('from', from.fullPath)
-
-    const user = localStorage.getItem('token')
-
-    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    const user_type = to.matched.length > 1 ? to.matched[0].meta.user_type : ''
-
-    if (!requiresAuth && user) {
-        console.log('not require auth but there is user')
-        if (localStorage.getItem("user_type") == "admin") {
-            console.log("admin")
-            next("/dashboard")
-        } else {
-            console.log("user")
-            next("/user/dashboard")
-        }
-    } else if (requiresAuth && !user) {
-        console.log('require auth there is no user')
-        next('/login');
-    } else if (user_type && !user_type.includes(localStorage.getItem("user_type"))) {
-        if (localStorage.getItem("user_type") == "admin") {
-            console.log("admin")
-            next("/dashboard")
-        } else if(localStorage.getItem("user_type") == "user") {
-            console.log("user")
-            next("/user/dashboard")
-        }
+function guardRoutes(to, next) {
+    const guest_routes = [
+        'login'
+    ]
+    if ((guest_routes.includes(to.name)) && localStorage.getItem('token') === '') {
+        next()
+    } else if (localStorage.getItem('token') === '') {
+        next({ name: 'login' })
+    } else if (guest_routes.includes(to.name)) {
+        next({ name: 'admin_dashboard' })
     } else {
-        
-        console.log('next')
-        next();
+        next()
     }
+}
 
+router.beforeEach((to, from, next) => {
+    if (localStorage.getItem('token')) {
+        Self().then(({ data }) => {
+            store.commit('login', data)
+            localStorage.setItem('token', data.access_token)
+            guardRoutes(to, next)
+        }).catch(err => {
+            localStorage.removeItem('token')
+            console.log(err)
+        })
+    } else {
+        guardRoutes(to, next)
+    }
 })
 
-export default router;
+export default router

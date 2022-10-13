@@ -1,3 +1,35 @@
+// import Vue from 'vue'
+// import App from './App.vue'
+// import router from './'
+// import store from './store'
+// import vuetify from './plugins/vuetify'
+// import axios from './plugins/axios'
+// import general from './mixins/general'
+// import titleMixin from './mixins/titleMixin'
+// import * as VeeValidate from 'vee-validate';
+// import moment from 'moment'
+// // import general from '@/mixins/general'
+// // import VueChart from 'vue-chart-js'
+// // import titleMixin from './mixins/titleMixin'
+
+// Vue.mixin(titleMixin)
+
+// Vue.prototype.moment = moment
+
+// // Vue.config.productionTip = false
+// Vue.use(VeeValidate)
+// // Vue.use(VueChart)
+// Vue.mixin(general)
+
+// new Vue({
+//     router,
+//     vuetify,
+//     axios,
+//     store,
+//     render: h => h(App),
+// }).$mount('#app')
+ 
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -16,16 +48,16 @@
  
  import vuetify from './plugins/vuetify';
  import router from './plugins/router';
- import store from './plugins/store';
+ import store from './store';
 //  import apexchart from './plugins/apexchart';
 //  import toast from './plugins/toast';
- import Axios from './plugins/axios';
+//  import Axios from './plugins/axios';
  
  
  import App from './layouts/App.vue';
  import moment from 'moment'
- Vue.prototype.$admin = Axios
- Vue.prototype.moment = moment
+//  Vue.prototype.$admin = Axios
+//  Vue.prototype.moment = moment
  
  
  import Vue from "vue";
